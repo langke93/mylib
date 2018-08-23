@@ -1,0 +1,82 @@
+<html>
+<head>
+<style type="text/css">
+td.orange-color {
+	background: orange;
+	font: bold 13px/20px 宋体;
+	color: black;
+}
+</style>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="application/javascript">
+	
+	
+		//只显示指定样式行
+		$(document).ready(function(){
+		 //绑定ID为showWarn按钮
+		 $("#showWarn").click(function(){
+		  //判断是否选中
+		  if($("#showWarn").is(":checked")){
+		    console.log("选中");
+		    //遍历所有class包含td-seq元素，父节点即tr设置隐藏
+		    $(".td-seq").each(function(){
+		      $(this).parent().hide();
+		    });
+		    //遍历所有class 包含orange-color元素，父节点即tr设置显示
+		    $(".orange-color").each(function(){
+		      $(this).parent().show();
+		    });
+		  }else{
+		    console.log("未选中");
+		    //反选显示所有元素
+		    $(".td-seq").each(function(){
+		      $(this).parent().show();
+		    });
+		  }
+		 });
+		});
+		
+
+</script>
+</head>
+<body>
+	<table border="1">
+		<colgroup>
+			<col width="2%">
+			<col width="20%">
+			<col width="4%">
+			<col width="4%">
+		</colgroup>
+
+		<thead>
+			<tr class="theadTr">
+				<th class="sorter-false"><input type="checkbox" id="showWarn" /></th>
+				<th>URL</th>
+				<th>调用数</th>
+				<th>5xx数</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class='td-seq'>1</td>
+				<td>a</td>
+				<td>b</td>
+				<td>c</td>
+			</tr>
+			<tr>
+				<td class='td-seq'>1</td>
+				<td class='td-value orange-color'>a</td>
+				<td>b</td>
+				<td>c</td>
+			</tr>
+			<tr>
+				<td class='td-seq'>1</td>
+				<td>a</td>
+				<td>b</td>
+				<td>c</td>
+			</tr>
+		</tbody>
+	</table>
+
+</body>
+</html>

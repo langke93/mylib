@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!-- Beans -->
+	<bean id="BookServiceTarget"
+		class="org.langke.spring.aop.BookServiceImpl" singleton="false" />
+
+	<!-- introduction advice -->
+	<bean id="AuditableMixin"
+		class="org.langke.spring.aop.AuditableMixin" singleton="false" />
+
+	<!-- Introduction advisor -->
+	<bean id="AuditableAdvisor"
+		class="org.springframework.aop.support.DefaultIntroductionAdvisor"
+		singleton="false">
+		<constructor-arg>
+			<ref bean="AuditableMixin" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="BookService"
+		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="BookServiceTarget" />
+		</property>
+
+		<property name="singleton">
+			<value>false</value>
+		</property>
+
+		<!-- force to use cglib -->
+		<property name="proxyTargetClass">
+			<value>true</value>
+		</property>
+
+		<!-- introduction methods -->
+		<property name="proxyInterfaces">
+			<value>org.langke.spring.aop.IAuditable</value>
+		</property>
+
+		<property name="interceptorNames">
+			<list>
+				<value>AuditableAdvisor</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

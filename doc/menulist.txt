@@ -1,0 +1,6 @@
+http://mall.jia.com/workflow/query_pending_item
+http://mall.jia.com/workflow/query_done_item
+http://mall.jia.com/market/book_base_info
+http://mall.jia.com/system/contract_template_query
+http://mall.jia.com/system/financial_statements_query
+http://mall.jia.com/system/calculate_order

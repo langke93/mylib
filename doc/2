@@ -1,0 +1,110 @@
+
+<Script Language="javascript"> 
+var objApi = new ActiveXObject("RTXClient.RTXAPI");
+var objKernal = objApi.GetObject("KernalRoot");
+var objBuddyManager = objKernal.RTXBuddyManager;
+
+var objApp = objApi.GetObject("AppRoot");
+var objHelper = objApp.GetAppObject("RTXHelper");
+var MyBuddy = objKernal.RTXGroupManager;
+
+var out = function(s){
+document.write(s.replace(/\n/gm, "\n"))
+}
+var x = 1;
+
+var g_aErr = [];
+function myLog(s)
+{
+g_aErr.push(s);
+}
+
+
+// 获取单个用户信息
+function fnGetInfo(UserName)
+{
+ try{
+    var objBuddy = objBuddyManager.Buddy(UserName);
+    
+    out([ "\nBEGIN:VCARD\nVERSION:3.0",
+    "FN:" + objBuddy.name + "_" + objBuddy.Account,
+    "N:;" + objBuddy.name + ";;;",
+    "TEL;TYPE=WORK:" + objBuddy.Telephone,    
+    "EMAIL;type=INTERNET;type=WORK;type=pref:" + objBuddy.Email,
+    // "性   别: " + (objBuddy.Gender ? "女" : "男"),
+    
+    "TEL;TYPE=CELL:" + objBuddy.Mobile,
+    "ORG:" + objHelper.GetBuddyDept(UserName),
+    "CATEGORIES:公司\nEND:VCARD\n"
+    ].join("\n"));
+  }catch(e){alert("fnGetInfo: " + UserName + e)}
+    x++;
+
+}
+
+function GetBuddyList( Dept_id,  Root_node)
+{ 
+  try
+  {  
+   var MyRtxBuddy = {Groups:{count:0}}, j = 0, szT;
+   try{
+       MyRtxBuddy = MyBuddy.Group(Dept_id);
+       j =  MyRtxBuddy.Groups.count;
+   }catch(e){
+    //myLog("GetBuddyList MyBuddy.Group: MyRtxBuddy.Groups.count = " + j + ";;" + Dept_id + e)
+    }
+    if(!j)
+    try{
+       j =  MyRtxBuddy.Groups.count;
+   }catch(e){}
+
+    try{
+   if(j)
+      for(var i = 0;i <= j; i++)
+      {
+       szT = MyRtxBuddy.Groups.Item(i).id;
+          // Root_node.push( MyRtxBuddy.Groups.Item(i).Name);
+          try{GetDeptUser(szT, Root_node);}catch(e){
+//myLog("GetBuddyList for GetDeptUser: " + szT + e)
+}
+
+          try{GetBuddyList(szT, Root_node);}catch(e){myLog("GetBuddyList for: " + szT + e)}
+      }
+      }catch(e){
+    myLog("GetBuddyList for = " + Dept_id + ", i = " + i + ";j = " + j)
+    }
+  }catch(e){myLog("GetBuddyList: " + Dept_id  + " = " + objBuddyManager.Buddy(Dept_id) + e)}
+}
+
+function GetDeptUser(Dept_id, Child_Node)
+{
+    var MyRtxBuddy = MyBuddy.Group(Dept_id);
+    var i = 0, szD = "", szT;
+    for(var j =  MyRtxBuddy.Buddies.count; i <= j; i++)
+    {
+    szT = MyRtxBuddy.Buddies.Item(i).Account;
+    try{fnGetInfo(szT);}catch(e){myLog("fnGetInfo: " + e)}
+    try{szD || (szD = objHelper.GetBuddyDept(szT));}catch(e){myLog("GetDeptUser: " + e)}
+    }
+    if(0 < i)
+     Child_Node.push([szD, " : ", i].join(""));
+}
+var g_data = [];
+GetBuddyList(10000001,g_data);
+// document.write(g_data.join("\n"))
+document.title = x;
+
+alert(g_aErr.join("\n"));
+
+function fnGetQYInfo()
+{
+    var objLicense = objApp.GetAppObject("License");
+    
+    alert([enterprisename = "企业名称 : " + objLicense.enterprisename,
+enterpriseshortname = "企业简称 : " + objLicense.enterpriseshortname,
+enterpriseTrunkNum = "企业总机号: " + objLicense.EnterpriseTrunkNumber,
+    ].join("\n"))
+
+}
+// alert(x)
+</script>

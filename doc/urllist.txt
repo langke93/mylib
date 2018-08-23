@@ -1,0 +1,4 @@
+http://mall.jia.com/activity/copy
+http://mall.jia.com/activity/create
+http://mall.jia.com/workflow/query_done_item?page=2
+http://mall.jia.com/workflow/query_pending_item?page=2

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+   <filter>
+    	<filter-name>logger</filter-name> 
+    	<filter-class>org.langke.j2ee14.ch9.LoggerFilter</filter-class>    	
+    </filter>
+     <filter>
+    	<filter-name>uppcaseFilter</filter-name> 
+    	<filter-class>org.langke.j2ee14.ch9.DispatcherFilter</filter-class>    	
+    </filter>
+     
+    <filter-mapping> 
+       <filter-name>logger</filter-name> 
+       <url-pattern>/*</url-pattern>  
+     </filter-mapping>
+     <filter-mapping> 
+       <filter-name>uppcaseFilter</filter-name> 
+       <url-pattern>/*</url-pattern>  
+       <dispatcher>REQUEST</dispatcher> 
+       <dispatcher>FORWARD</dispatcher>         
+     </filter-mapping>
+     <!-- 
+    <listener>
+        <listener-class>org.langke.j2ee14.ch9.ExampleListener</listener-class>
+    </listener>
+     <listener>
+        <listener-class>org.langke.j2ee14.ch9.RequestListenerTest</listener-class>
+    </listener> -->
+	  <listener>
+		<listener-class>listener.OnLineDemo</listener-class>
+	  </listener>
+	  
+     <servlet>
+        <servlet-name>TestFilterServlet2</servlet-name>
+        <servlet-class>org.langke.j2ee14.ch9.TestFilterServlet2</servlet-class>
+    </servlet>  
+    <servlet>
+        <servlet-name>TestFilterServlet</servlet-name>
+        <servlet-class>org.langke.j2ee14.ch9.TestFilterServlet</servlet-class>
+    </servlet>  
+    <servlet-mapping>
+        <servlet-name>TestFilterServlet2</servlet-name>
+        <url-pattern>/servlet/testfilter2</url-pattern>
+    </servlet-mapping>
+      <servlet-mapping>
+        <servlet-name>TestFilterServlet</servlet-name>
+        <url-pattern>/servlet/testfilter</url-pattern>
+    </servlet-mapping>
+    
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
